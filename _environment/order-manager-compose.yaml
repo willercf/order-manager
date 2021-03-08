@@ -1,0 +1,66 @@
+version: '3.3'
+services:
+
+  postgres:
+    image: postgres:9.6
+    container_name: iupp_postgres
+    environment:
+      - POSTGRES_DB=iupp-order
+      - POSTGRES_USER=iupp-order
+      - POSTGRES_PASSWORD=iupp-order
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  axonserver:
+    container_name: iupp_axon_server
+    image: axoniq/axonserver
+    hostname: axonserver
+    volumes:
+      - type: bind
+        source: /home/willer/development/docker-volumes/axonserver/data
+        target: /data
+      - type: bind
+        source: /home/willer/development/docker-volumes/axonserver/events
+        target: /eventdata
+      - type: bind
+        source: /home/willer/development/docker-volumes/axonserver/config
+        target: /config
+        read_only: true
+    ports:
+      - '8024:8024'
+      - '8124:8124'
+      - '8224:8224'
+    networks:
+      - axon-demo
+
+  database:
+    image: mongo
+    container_name: iupp_mongo_db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root
+    volumes:
+      - ./docker-entrypoint-initdb.d/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+    ports:
+      - '27017-27019:27017-27019'
+
+  mongo-express:
+    image: mongo-express
+    container_name: iupp_mongo_express
+    restart: always
+    ports:
+      - 8070:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: root
+      ME_CONFIG_MONGODB_SERVER: iupp_mongo_db
+      ME_CONFIG_BASICAUTH_USERNAME: iupp_mongo
+      ME_CONFIG_BASICAUTH_PASSWORD: iupp_mongo
+
+networks:
+  axon-demo:
+
+volumes:
+  postgres-data:

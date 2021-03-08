@@ -1,0 +1,50 @@
+HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**
+!**/src/test/**
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+
+### VS Code ###
+.vscode/
+
+### Custom  ###
+*.log
+*.zip
+.settings/
+bin/
+*.jar
+*.versionsBackup
+schema.sql
+*.bak
+.mvn
+.attach_pid*
+*.pfx
+*.cer
+mvnw
+mvnw.cmd
+src/main/resources/config/application-local.yaml
+src/main/resources/application-local.yaml
+
